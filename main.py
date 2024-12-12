@@ -12,7 +12,7 @@ class Joe(commands.Bot):
             command_prefix='j!',
             intents=intents,
             case_insensitive=True,
-            activity=discord.Activity(type=discord.ActivityType.watching, name='all of you'),
+            activity=discord.Activity(type=discord.ActivityType.watching, name='you code'),
             status=discord.Status.online
             )
         print(f"Created bot with prefix {self.command_prefix}.")
@@ -20,6 +20,14 @@ class Joe(commands.Bot):
 bot = Joe()
 
 async def main():
+
+    # Load cogs
+    for filename in os.listdir("modules"):
+        if filename[-3:] == ".py" and filename != "__init__.py" and filename != "testing.py":
+            try:
+                await bot.load_extension(f"modules.{filename[:-3]}")
+            except Exception as e:
+                print(f"Couldn't load module \"{filename}\": {e}")
 
     @bot.event
     async def on_ready():
